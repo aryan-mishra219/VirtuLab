@@ -3,7 +3,7 @@
 VirtuLab is a responsive, interactive web-based simulation suite designed to visualize complex scientific and mathematical concepts that are difficult to observe in a traditional laboratory setting. Built with vanilla JavaScript and HTML5 Canvas, it offers real-time physics engines and data analysis tools for students and educators.
 
 ![Project Status](https://img.shields.io/badge/Status-Active-brightgreen)
-![License](https://img.shields.io/badge/License-MIT-blue)
+![License](https://img.shields.io/badge/License-Apache_2.0-blue)
 Project Link : https://javsvirtulab.netlify.app/
 ## 🌟 Features
 
