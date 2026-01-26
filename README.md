@@ -4,7 +4,9 @@ VirtuLab is a responsive, interactive web-based simulation suite designed to vis
 
 ![Project Status](https://img.shields.io/badge/Status-Active-brightgreen)
 ![License](https://img.shields.io/badge/License-Apache_2.0-blue)
+
 Project Link : https://javsvirtulab.netlify.app/
+
 ## 🌟 Features
 
 VirtuLab is divided into three core disciplines, each featuring "impossible" experiments:
