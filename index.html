@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VirtuLab: Science & Math Suite</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="analysis-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="anl-title">Data Analysis</div>
+                <button class="close-btn" onclick="closeAnalysis()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="calc-panel" id="anl-calc"></div>
+                <div class="graph-panel">
+                    <canvas id="dataChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="theory-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="theory-title">Scientific Principle</div>
+                <button class="close-btn" onclick="closeTheory()">×</button>
+            </div>
+            <div id="theory-body"></div>
+        </div>
+    </div>
+
+    <div id="sidebar">
+        <div class="logo-area">
+            <div class="logo-text">VirtuLab <span style="color:var(--accent-gold)">ULTRA</span></div>
+            <div class="logo-sub">Science & Math Suite</div>
+        </div>
+
+        <div class="subject-tabs">
+            <button class="subject-btn active" onclick="setSubject('physics', this)" style="border-bottom-color:var(--accent-cyan)">Physics</button>
+            <button class="subject-btn" onclick="setSubject('chemistry', this)">Chemistry</button>
+            <button class="subject-btn" onclick="setSubject('math', this)">Maths</button>
+        </div>
+
+        <div id="tabs-physics" class="exp-tabs active">
+            <button class="exp-btn tab-phy active" onclick="switchExp('shm')">SHM</button>
+            <button class="exp-btn tab-phy" onclick="switchExp('gravity')">Space</button>
+        </div>
+        <div id="tabs-chemistry" class="exp-tabs">
+            <button class="exp-btn tab-chem active" onclick="switchExp('decay')">Radioactivity</button>
+        </div>
+        <div id="tabs-math" class="exp-tabs">
+            <button class="exp-btn tab-math active" onclick="switchExp('pi')">Irrational Pi</button>
+        </div>
+
+        <div id="ctrl-shm" class="controls-container active">
+            <h2>Reference Circle</h2>
+            <div class="subtitle">SHM & Uniform Circular Motion</div>
+            
+            <div class="control-group">
+                <label>Amplitude (Radius): <span id="s-amp-val">100</span> px</label>
+                <input type="range" id="s-amp" min="50" max="150" step="10" value="100">
+            </div>
+            
+            <div class="control-group">
+                <label>Frequency (ω): <span id="s-freq-val">1.0</span> Hz</label>
+                <input type="range" id="s-freq" min="0.5" max="3.0" step="0.1" value="1.0">
+            </div>
+
+            <button class="btn-primary" onclick="startSHM()">START OSCILLATION</button>
+            <button class="btn-slow" onclick="toggleSlowMo(this)">SLOW MOTION</button>
+            <button class="btn-analyze" onclick="showAnalysis('shm')">VIEW WAVE DATA</button>
+        </div>
+
+        <div id="ctrl-gravity" class="controls-container">
+            <h2>Orbital Navigation</h2>
+            <div class="subtitle">N-Body Gravity Assist</div>
+            <div class="control-group">
+                <label>Thruster Power: <span id="g-spd-val">6.5</span> km/s</label>
+                <input type="range" id="g-spd" min="3.0" max="8.0" step="0.1" value="6.5">
+            </div>
+            <div class="control-group">
+                <label>Launch Angle: <span id="g-ang-val">45</span>°</label>
+                <input type="range" id="g-ang" min="0" max="360" value="45">
+            </div>
+            <div class="control-group">
+                <label>Planet Mass: <span id="g-mass-val">2.5</span> M⊕</label>
+                <input type="range" id="g-mass" min="0.5" max="3.0" step="0.1" value="2.5">
+            </div>
+            <button class="btn-primary" onclick="fireGravity()">LAUNCH PROBE</button>
+            <button class="btn-slow" onclick="toggleSlowMo(this)">SLOW MOTION</button>
+            <button class="btn-analyze" onclick="showAnalysis('gravity')">VIEW DATA & GRAPH</button>
+        </div>
+
+        <div id="ctrl-decay" class="controls-container">
+            <h2 class="color-purple">Decay Chamber</h2>
+            <div class="subtitle">Nuclear Chemistry</div>
+            <div class="control-group">
+                <label>Atom Sample Size: <span id="d-num-val">200</span></label>
+                <input type="range" id="d-num" min="50" max="500" step="50" value="200">
+            </div>
+            <div class="control-group">
+                <label>Decay Probability (λ): <span id="d-prob-val">Medium</span></label>
+                <input type="range" id="d-prob" min="0.005" max="0.05" step="0.005" value="0.01">
+            </div>
+            <button class="btn-primary btn-chem" onclick="startDecay()">START DECAY</button>
+            <button class="btn-analyze color-purple" onclick="showAnalysis('decay')">HALF-LIFE GRAPH</button>
+        </div>
+
+        <div id="ctrl-pi" class="controls-container">
+            <h2 class="color-math">Visualizing Pi</h2>
+            <div class="subtitle">Number Theory & Chaos</div>
+            <div class="control-group">
+                <label>Simulation Speed: <span id="m-spd-val">1x</span></label>
+                <input type="range" id="m-spd" min="1" max="10" step="1" value="1">
+            </div>
+            <div class="control-group">
+                <label>Zoom Level: <span id="m-zoom-val">100</span>%</label>
+                <input type="range" id="m-zoom" min="50" max="200" step="10" value="100">
+            </div>
+            <button class="btn-primary btn-math" onclick="startMath()">START VISUALIZATION</button>
+            <button class="btn-charge" style="margin-top:10px; background:transparent; border:1px solid #666;" onclick="resetMath()">CLEAR TRACE</button>
+            <button class="btn-analyze color-math" onclick="showAnalysis('pi')">PROOF OF IRRATIONALITY</button>
+        </div>
+    </div>
+
+    <div id="viewport">
+        <canvas id="canvas-shm" class="active"></canvas>
+        <canvas id="canvas-gravity"></canvas>
+        <canvas id="canvas-decay"></canvas>
+        <canvas id="canvas-pi"></canvas>
+        
+        <button class="help-btn" onclick="toggleTheory()">?</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
