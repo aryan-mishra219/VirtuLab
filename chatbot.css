@@ -1,0 +1,392 @@
+/* Chatbot Floating Widget Styles */
+:root {
+    --chat-bg: rgba(15, 23, 42, 0.85);
+    --chat-border: rgba(0, 243, 255, 0.3);
+    --chat-accent: #00f3ff;
+    --chat-user-bg: #00f3ff;
+    --chat-ai-bg: #334155;
+    --chat-text: #ffffff;
+}
+
+/* Floating Action Button */
+#chatbot-toggler {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--chat-accent), #2563eb);
+    border: none;
+    box-shadow: 0 4px 20px rgba(0, 243, 255, 0.5);
+    cursor: pointer;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+}
+
+#chatbot-toggler:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 30px rgba(0, 243, 255, 0.7);
+}
+
+#chatbot-toggler svg {
+    width: 32px;
+    height: 32px;
+    fill: #0f172a;
+    transition: all 0.3s;
+}
+
+/* Chat Widget Container */
+#chatbot-widget {
+    position: fixed;
+    bottom: 100px;
+    right: 25px;
+    width: 380px;
+    height: 550px;
+    max-height: 80vh;
+    background: var(--chat-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--chat-border);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 10000;
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+#chatbot-widget.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+}
+
+/* Header */
+.chat-header {
+    padding: 18px 20px;
+    background: rgba(30, 41, 59, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--chat-accent);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-status-dot {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #22c55e;
+}
+
+.close-chat-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Full Screen Mode */
+#chatbot-widget.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+    border: none;
+    transform: none !important;
+    z-index: 99999;
+}
+
+#chatbot-widget.fullscreen .chat-messages {
+    font-size: 1.1rem;
+}
+
+/* Header Controls */
+.chat-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.expand-chat-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.expand-chat-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.expand-chat-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+#chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scroll-behavior: smooth;
+}
+
+#chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+#chat-messages::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+/* Messages */
+.message {
+    max-width: 85%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    position: relative;
+    animation: messageIn 0.3s ease-out forwards;
+}
+
+@keyframes messageIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message.user {
+    align-self: flex-end;
+    background: var(--chat-user-bg);
+    color: #0f172a;
+    font-weight: 600;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 243, 255, 0.2);
+}
+
+.message.ai {
+    align-self: flex-start;
+    background: var(--chat-ai-bg);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom-left-radius: 4px;
+}
+
+.message.loading {
+    color: #94a3b8;
+    font-style: italic;
+    font-size: 0.85rem;
+    padding: 8px 16px;
+}
+
+.message p {
+    margin: 0 0 8px 0;
+}
+
+.message ul {
+    margin: 5px 0 10px 20px;
+    padding: 0;
+    list-style-type: disc;
+}
+
+.message li {
+    margin-bottom: 5px;
+}
+
+.message strong {
+    color: #fff;
+    font-weight: 700;
+}
+
+.message em {
+    color: var(--chat-accent);
+    font-style: italic;
+}
+
+/* Input Area */
+.chat-input-container {
+    padding: 15px;
+    background: rgba(15, 23, 42, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    gap: 10px;
+}
+
+#chat-input-field {
+    flex: 1;
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    padding: 12px 16px;
+    border-radius: 25px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+#chat-input-field:focus {
+    border-color: var(--chat-accent);
+    background: rgba(30, 41, 59, 0.9);
+}
+
+#chat-send-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: var(--chat-accent);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s, filter 0.2s;
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+}
+
+#chat-send-btn:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+#chat-send-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: #0f172a;
+    transform: translateX(2px);
+    /* visual centering */
+}
+
+/* Language Toggle */
+.lang-toggle-wrapper {
+    position: relative;
+}
+
+.lang-toggle-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 36px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+    padding: 0 4px;
+    font-family: inherit;
+}
+
+.lang-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.lang-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: rgba(15, 23, 42, 0.97);
+    border: 1px solid rgba(0, 243, 255, 0.25);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    min-width: 160px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-6px) scale(0.97);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 99999;
+}
+
+.lang-dropdown.open {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0) scale(1);
+}
+
+.lang-dropdown button {
+    display: block;
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    font-family: inherit;
+    padding: 10px 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.lang-dropdown button:last-child {
+    border-bottom: none;
+}
+
+.lang-dropdown button:hover {
+    background: rgba(0, 243, 255, 0.1);
+    color: #00f3ff;
+}
+
+.lang-dropdown button.lang-active {
+    background: rgba(0, 243, 255, 0.15);
+    color: #00f3ff;
+    font-weight: 600;
+}
