@@ -5,7 +5,7 @@ VirtuLab is a responsive, interactive web-based simulation suite designed to vis
 ![Project Status](https://img.shields.io/badge/Status-Active-brightgreen)
 ![License](https://img.shields.io/badge/License-Apache_2.0-blue)
 
-Project Link : https://javsvirtulab.netlify.app/  (DUE TO API SECURITY REASON CHATBOT IS NOT LIVE SOON TO BE FIXED)
+Project Link : [https://javsvirtulab.netlify.app/](https://javsvirtulab.netlify.app/)  (DUE TO API SECURITY REASON CHATBOT IS NOT LIVE SOON TO BE FIXED)
 
 ## 🌟 Features
 
