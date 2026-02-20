@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VirtuLab: Science & Math Suite</title>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="chatbot.css">
 </head>
+
 <body>
+    <!-- ENTRY PAGE OVERLAY -->
+    <div id="entry-page">
+        <div class="entry-content">
+            <h1 class="entry-title">VirtuLab <span class="accent">ULTRA</span></h1>
+            <p class="entry-subtitle">Interactive Science & Math Suite</p>
+            <p class="entry-tagline">Simulate &bull; Analyze &bull; Discover</p>
+            <button id="start-btn" onclick="startApp()">START EXPLORING</button>
+            <div class="powered-by">Powered by JAVS</div>
+        </div>
+
+        <!-- Warp Starfield -->
+        <div class="warp-container">
+            <div class="stars"></div>
+            <div class="stars2"></div>
+            <div class="stars3"></div>
+        </div>
+    </div>
+
 
     <div id="analysis-modal" class="modal-overlay">
         <div class="modal-content">
@@ -43,7 +64,8 @@
         </div>
 
         <div class="subject-tabs">
-            <button class="subject-btn active" onclick="setSubject('physics', this)" style="border-bottom-color:var(--accent-cyan)">Physics</button>
+            <button class="subject-btn active" onclick="setSubject('physics', this)"
+                style="border-bottom-color:var(--accent-cyan)">Physics</button>
             <button class="subject-btn" onclick="setSubject('chemistry', this)">Chemistry</button>
             <button class="subject-btn" onclick="setSubject('math', this)">Maths</button>
         </div>
@@ -62,12 +84,12 @@
         <div id="ctrl-shm" class="controls-container active">
             <h2>Reference Circle</h2>
             <div class="subtitle">SHM & Uniform Circular Motion</div>
-            
+
             <div class="control-group">
                 <label>Amplitude (Radius): <span id="s-amp-val">100</span> px</label>
                 <input type="range" id="s-amp" min="50" max="150" step="10" value="100">
             </div>
-            
+
             <div class="control-group">
                 <label>Frequency (ω): <span id="s-freq-val">1.0</span> Hz</label>
                 <input type="range" id="s-freq" min="0.5" max="3.0" step="0.1" value="1.0">
@@ -110,6 +132,8 @@
                 <input type="range" id="d-prob" min="0.005" max="0.05" step="0.005" value="0.01">
             </div>
             <button class="btn-primary btn-chem" onclick="startDecay()">START DECAY</button>
+            <button id="btn-proceed" class="btn-primary" style="display:none; background: #ea580c; margin-top: 5px;"
+                onclick="proceedDecay()">PROCEED (NEXT HALF-LIFE)</button>
             <button class="btn-analyze color-purple" onclick="showAnalysis('decay')">HALF-LIFE GRAPH</button>
         </div>
 
@@ -125,7 +149,8 @@
                 <input type="range" id="m-zoom" min="50" max="200" step="10" value="100">
             </div>
             <button class="btn-primary btn-math" onclick="startMath()">START VISUALIZATION</button>
-            <button class="btn-charge" style="margin-top:10px; background:transparent; border:1px solid #666;" onclick="resetMath()">CLEAR TRACE</button>
+            <button class="btn-charge" style="margin-top:10px; background:transparent; border:1px solid #666;"
+                onclick="resetMath()">CLEAR TRACE</button>
             <button class="btn-analyze color-math" onclick="showAnalysis('pi')">PROOF OF IRRATIONALITY</button>
         </div>
     </div>
@@ -135,10 +160,93 @@
         <canvas id="canvas-gravity"></canvas>
         <canvas id="canvas-decay"></canvas>
         <canvas id="canvas-pi"></canvas>
-        
+
         <button class="help-btn" onclick="toggleTheory()">?</button>
     </div>
 
+    <!-- CHATBOT WIDGET -->
+    <button id="chatbot-toggler">
+        <svg viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"></path>
+        </svg>
+    </button>
+
+    <div id="chatbot-widget">
+        <div class="chat-header">
+            <div class="chat-title">
+                <span class="chat-status-dot"></span> VirtuAI
+            </div>
+            <div class="chat-controls">
+                <div class="lang-toggle-wrapper">
+                    <button class="lang-toggle-btn" id="lang-toggle-btn" title="Change Language">🌐</button>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <button onclick="setLanguage('english')">English</button>
+                        <button onclick="setLanguage('hindi')">Hindi</button>
+                        <button onclick="setLanguage('punjabi')">Punjabi</button>
+                        <button onclick="setLanguage('bengali')">Bengali</button>
+                        <button onclick="setLanguage('malayalam')">Malayalam</button>
+                    </div>
+                </div>
+                <button class="expand-chat-btn">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"></path>
+                    </svg>
+                </button>
+                <button class="close-chat-btn">×</button>
+            </div>
+        </div>
+        <div id="chat-messages">
+            <!-- Messages will appear here -->
+        </div>
+        <div class="chat-input-container">
+            <input type="text" id="chat-input-field" placeholder="Ask a question...">
+            <button id="chat-send-btn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+    <script src="chatbot.js"></script>
+    <script>
+        function createStars(count, selector) {
+            const stars = document.querySelector(selector);
+            let shadow = "";
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            for (let i = 0; i < count; i++) {
+                // Centering the stars: random position minus half dimension
+                const x = Math.floor(Math.random() * width) - width / 2;
+                const y = Math.floor(Math.random() * height) - height / 2;
+                shadow += `${x}px ${y}px #fff` + (i < count - 1 ? ", " : "");
+            }
+            stars.style.boxShadow = shadow;
+        }
+
+        // Generate Milky Way effect
+        createStars(700, '.stars');
+        createStars(200, '.stars2');
+        createStars(100, '.stars3');
+
+        function startApp() {
+            const entryPage = document.getElementById('entry-page');
+
+            // Add warping class to trigger animation
+            entryPage.classList.add('warping');
+
+            // Wait for warp animation to establish, then fade out the whole overlay
+            setTimeout(() => {
+                entryPage.classList.add('fade-out');
+
+                setTimeout(() => {
+                    entryPage.style.display = 'none';
+                }, 1500); // Wait for CSS transition (1.5s to match CSS)
+            }, 2000);
+        }
+    </script>
 </body>
+
 </html>
