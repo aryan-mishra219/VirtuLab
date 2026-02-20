@@ -5,7 +5,7 @@ VirtuLab is a responsive, interactive web-based simulation suite designed to vis
 ![Project Status](https://img.shields.io/badge/Status-Active-brightgreen)
 ![License](https://img.shields.io/badge/License-Apache_2.0-blue)
 
-Project Link : https://javsvirtulab.netlify.app/
+Project Link : https://javsvirtulab.netlify.app/  (DUE TO API SECURITY REASON CHATBOT IS NOT LIVE SOON TO BE FIXED)
 
 ## 🌟 Features
 
@@ -54,4 +54,6 @@ VirtuLab/
 ├── index.html      # Main structure and UI layout
 ├── style.css       # Cyberpunk theme, responsive design, and animations
 ├── script.js       # Physics engines, logic loops, and Chart.js configs
+├── chatbot.css     # ChatBot Cyberpunk theme
+├── chatbot.js      # Chatbot logics
 └── README.md       # Project documentation
